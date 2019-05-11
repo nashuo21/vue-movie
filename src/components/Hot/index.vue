@@ -1,60 +1,23 @@
 <template>
   <div class="movie_body">
     <ul>
-      <li>
+      <li v-for="item in movieList" :key="item.id">
         <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
+          <img :src="item.img | setWH('128.180')" :alt="item.nm">
         </div>
         <div class="info_list">
-          <h2>电影名称</h2>
+          <h2>{{item.nm}}</h2>
           <p>
-            打分：
-            <span class="grade">9.2</span>
+            评分：
+            <span class="grade">{{item.sc}}</span>
           </p>
-          <p>主演：张三，李四，王五</p>
+          <p>主演：{{item.star}}</p>
           <p>
-            放映：
-            <span>55</span> 场
+            <span>{{item.showInfo}}</span>
           </p>
+          <i v-if="item.version" class="iconfont icon-Dyanjing"></i>
         </div>
 
-        <div class="btn_mall">抢票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            打分：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            放映：
-            <span>55</span> 场
-          </p>
-        </div>
-
-        <div class="btn_mall">抢票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>小丑地府：三大烛魔王（VR）0000</h2>
-          <p>
-            打分：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五，赵柳，牛气，马八</p>
-          <p>
-            放映：
-            <span>55</span> 场
-          </p>
-        </div>
         <div class="btn_mall">抢票</div>
       </li>
     </ul>
@@ -65,7 +28,18 @@
 export default {
   name: "Hot",
   data() {
-    return {};
+    return {
+      movieList: []
+    };
+  },
+  mounted() {
+    this.axios.get("/api/movieOnInfoList?cityId=10").then(res => {
+      var msg = res.data.msg;
+      if (msg === "ok") {
+        this.movieList = res.data.data.movieList;
+        console.log(this.movieList);
+      }
+    });
   },
   components: {}
 };
@@ -142,5 +116,9 @@ export default {
 }
 .movie_body .btn_pre {
   background-color: #3c9fe6;
+}
+.icon-Dyanjing {
+  color: #f03d37;
+  font-size: 20px;
 }
 </style>

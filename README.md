@@ -1,4 +1,4 @@
-# movie
+# 项目名称 vue-movie
 
 ## Project setup
 ```
