@@ -21,3 +21,4 @@ vue-movie
 - [better-scroll手册](http://ustbhuangyi.github.io/better-scroll/doc/api.html)
 # 其他
 - 整个vue-movie项目的数据，来自视频教程老师提供的真实数据接口
+# 未完待续
