@@ -3,52 +3,24 @@
     <div class="search_input">
       <div class="search_input_wrapper">
         <i class="iconfont icon-search"></i>
-        <input type="text">
+        <input type="text" v-model="txtSeach">
       </div>
     </div>
     <div class="search_result">
       <h3>电影/电视剧/综艺</h3>
       <ul>
-        <li>
+        <li v-for="item in movieList" :key="item.id">
           <div class="imge">
-            <img src="/img/movie1.jpg" alt="电影">
+            <img :src="item.img | setWH('120.180')" :alt="item.nm">
           </div>
           <div class="info">
             <p>
-              <span>无名之辈</span>
-              <span>8.5</span>
+              <span>{{item.nm}}</span>
+              <span>得分：{{item.sc}}</span>
             </p>
-            <p>A Cool Fish</p>
-            <p>剧情，喜剧，犯罪</p>
-            <p>2018-11-17</p>
-          </div>
-        </li>
-        <li>
-          <div class="imge">
-            <img src="/img/movie1.jpg" alt="电影">
-          </div>
-          <div class="info">
-            <p>
-              <span>无名之辈</span>
-              <span>8.5</span>
-            </p>
-            <p>A Cool Fish</p>
-            <p>剧情，喜剧，犯罪</p>
-            <p>2018-11-17</p>
-          </div>
-        </li>
-        <li>
-          <div class="imge">
-            <img src="/img/movie1.jpg" alt="电影">
-          </div>
-          <div class="info">
-            <p>
-              <span>无名之辈</span>
-              <span>8.5</span>
-            </p>
-            <p>A Cool Fish</p>
-            <p>剧情，喜剧，犯罪</p>
-            <p>2018-11-17</p>
+            <p class="star">主演：{{item.star}}</p>
+            <p>主题：{{item.cat}}</p>
+            <p>上映：{{item.rt}}</p>
           </div>
         </li>
       </ul>
@@ -60,7 +32,44 @@
 export default {
   name: "Search",
   data() {
-    return {};
+    return {
+      txtSeach: "",
+      movieList: []
+    };
+  },
+  methods: {
+    cancelRequest() {
+      if (typeof this.source === "function") {
+        this.source("终止请求");
+      }
+    }
+  },
+  watch: {
+    txtSeach(kw) {
+      var that = this;
+      this.cancelRequest();
+      this.axios
+        .get("/api/searchList?cityId=10&kw=" + kw, {
+          cancelToken: new this.axios.CancelToken(function(c) {
+            that.source = c;
+          })
+        })
+        .then(res => {
+          var msg = res.data.msg;
+          var movies = res.data.data.movies;
+          if (msg && movies) {
+            this.movieList = res.data.data.movies.list;
+            console.log(this.movieList);
+          }
+        })
+        .catch(err => {
+          if (this.axios.isCancel(err)) {
+            console.log("取消请求", err.message);
+          } else {
+            console.log(err);
+          }
+        });
+    }
   },
   components: {}
 };
@@ -84,7 +93,7 @@ export default {
   display: flex;
 }
 .search_body .search_input_wrapper i {
-  font-size: 16px;
+  font-size: 14px;
   padding: 4px 0;
 }
 .search_body .search_input_wrapper input {
@@ -97,7 +106,7 @@ export default {
 }
 
 .search_body .search_result h3 {
-  font-size: 15px;
+  font-size: 14px;
   color: #999999;
   padding: 9px 15px;
   border-bottom: 1px solid #e6e6e6;
@@ -109,12 +118,12 @@ export default {
   display: flex;
 }
 .search_body .search_result ul li .imge {
-  width: 80px;
+  width: 64px;
   float: left;
 }
 .search_body .search_result .imge img {
   width: 100%;
-  height: 100px;
+  height: 90px;
 }
 .search_body .search_result .info {
   float: left;
@@ -128,12 +137,17 @@ export default {
   font-size: 14px;
 }
 .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(1) {
-  font-size: 18px;
+  font-size: 14px;
   flex: 1;
   font-weight: 700;
 }
 .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(2) {
   font-size: 16px;
   color: #faaf00;
+}
+.star {
+  overflow: hidden;
+  white-space: wrap;
+  text-overflow: ellipsis;
 }
 </style>

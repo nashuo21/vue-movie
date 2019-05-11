@@ -1,116 +1,22 @@
 <template>
   <div class="movie_body">
     <ul>
-      <li>
+      <li v-for="item in comList" :key="item.id">
         <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
+          <img :src="item.img | setWH('128.180')" :alt="item.nm">
         </div>
         <div class="info_list">
-          <h2>电影名称</h2>
+          <h2>{{item.nm}}</h2>
           <p>
             期待值：
-            <span class="grade">9.2</span>
+            <span class="grade">{{item.wish}}</span>
           </p>
-          <p>主演：张三，李四，王五</p>
+          <p>主演：{{item.star}}</p>
           <p>
-            上映时间：
-            <span>2019-6-6</span>
+            上映：
+            <span>{{item.rt}}</span>
           </p>
-        </div>
-
-        <div class="btn_prev">预订</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            期待值：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            上映时间：
-            <span>2019-6-6</span>
-          </p>
-        </div>
-
-        <div class="btn_prev">预订</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            期待值：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            上映时间：
-            <span>2019-6-6</span>
-          </p>
-        </div>
-
-        <div class="btn_prev">预订</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            期待值：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            上映时间：
-            <span>2019-6-6</span>
-          </p>
-        </div>
-
-        <div class="btn_prev">预订</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            期待值：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            上映时间：
-            <span>2019-6-6</span>
-          </p>
-        </div>
-
-        <div class="btn_prev">预订</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/img/movie1.jpg" alt="热播电影">
-        </div>
-        <div class="info_list">
-          <h2>电影名称</h2>
-          <p>
-            期待值：
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演：张三，李四，王五</p>
-          <p>
-            上映时间：
-            <span>2019-6-6</span>
-          </p>
+          <i v-if="item.version" class="iconfont icon-Dyanjing"></i>
         </div>
 
         <div class="btn_prev">预订</div>
@@ -123,7 +29,18 @@
 export default {
   name: "New",
   data() {
-    return {};
+    return {
+      comList: []
+    };
+  },
+  mounted() {
+    this.axios.get("/api/movieComingList?cityId=10").then(res => {
+      var msg = res.data.msg;
+      if (msg === "ok") {
+        this.comList = res.data.data.comingList;
+        console.log(this.comList);
+      }
+    });
   },
   components: {}
 };
@@ -200,5 +117,9 @@ export default {
 }
 .movie_body .btn_prev {
   background-color: #3c9fe6;
+}
+.icon-Dyanjing {
+  color: #f03d37;
+  font-size: 20px;
 }
 </style>

@@ -1,149 +1,19 @@
 <template>
   <div class="cinema_body">
     <ul>
-      <li>
+      <li v-for="item in cinemaList" :key="item.id">
         <div>
-          <span>地影院（澳东世纪店）</span>
+          <span>{{item.nm}}</span>
           <span class="q">
-            <span class="price">22.9</span>
+            <span class="price">{{item.sellPrice}} 元起</span>
           </span>
         </div>
         <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
+          <span>{{item.addr}}</span>
+          <span>{{item.distance}}</span>
         </div>
         <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-      <li>
-        <div>
-          <span>地影院（澳东世纪店）</span>
-          <span class="q">
-            <span class="price">22.9</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>金州区大连经济开发区</span>
-          <span>1763.4km</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-          <div>手办</div>
+          <div v-for="(num,key) in item.tag" v-if="num===1" :key="key" :class="key | classCard">{{ key | formatCard }}</div>
         </div>
       </li>
     </ul>
@@ -154,9 +24,53 @@
 export default {
   name: "All",
   data() {
-    return {};
+    return {
+      cinemaList: []
+    };
   },
-  components: {}
+  filters: {
+    formatCard(key){
+      var card = [
+        {key:'allowRefund',value:'退改'},
+        {key:'sell',value:'优惠'},
+        {key:'snack',value:'小吃'},
+        {key:'endorse',value:'推荐'},
+      ];
+      for(var i=0;i<card.length;i++){
+        
+        if(card[i].key === key){
+          return card[i].value;
+        }
+               
+      }
+      return '';
+    },
+    classCard(key){
+      var card = [
+        {key:'allowRefund',value:'bl'},
+        {key:'sell',value:'or'},
+        {key:'snack',value:'or'},
+        {key:'endorse',value:'bl'},
+      ];
+      for(var i=0;i<card.length;i++){
+        
+        if(card[i].key === key){
+          return card[i].value;
+        }
+               
+      }
+    }
+  },
+  components: {},
+  mounted() {
+    this.axios.get("/api/cinemaList?cityId=10").then(res => {
+      var msg = res.data.msg;
+      if (msg === "ok") {
+        this.cinemaList = res.data.data.cinemas;
+        console.log(this.cinemaList);
+      }
+    });
+  }
 };
 </script>
 
@@ -178,6 +92,7 @@ export default {
 .cinema_body .q {
   font-size: 11px;
   color: #f03d37;
+  float: right;
 }
 .cinema_body .price {
   font-size: 18px;
@@ -194,12 +109,13 @@ export default {
 }
 .cinema_body .card div {
   margin: 0 1px;
-  padding: 0 5px;
+  padding: 3px;
   height: 15px;
   line-height: 15px;
-  border-radius: 2px;
-  color: #ff9900;
+  border-radius: 4px;
+  color: hsl(17, 100%, 50%);
   border: 1px solid #f90;
+  font-size: 14px;
 }
 .cinema_body .card div.or {
   color: #ff9900;
@@ -209,4 +125,7 @@ export default {
   color: #589daf;
   border: 1px solid #589daf;
 }
+/* .promotion {
+  font-size: 14px;
+} */
 </style>
