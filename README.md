@@ -12,8 +12,10 @@ vue-movie
 - github
 - nodejs
 - vue
+- vuex
 - vue-router
 - better-scroll
+- axios
 # 参考文档
 - [vuejs中文网站](https://cn.vuejs.org/)
 - [vue-router](https://router.vuejs.org/zh/guide/#html)
