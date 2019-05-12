@@ -41,6 +41,28 @@ export default new Router({
           component: () => import("@/components/Search")
         },
         {
+          path: "detail/1/:movieId",
+          name: "detail",
+          components: {
+            default: () => import("@/components/Hot"),
+            detail: () => import("@/views/Movie/detail")
+          },
+          props: {
+            detail: true
+          }
+        },
+        {
+          path: "detail/2/:movieId",
+          name: "detail",
+          components: {
+            default: () => import("@/components/New"),
+            detail: () => import("@/views/Movie/detail")
+          },
+          props: {
+            detail: true
+          }
+        },
+        {
           path: "/movie",
           redirect: "/movie/hot"
         }

@@ -9,12 +9,12 @@
             {{pullDownMsg}}
           </div>
         </li>
-        <li @tap="toDetail" v-for="item in movieList" :key="item.id">
+        <li v-for="item in movieList" :key="item.id">
           <div class="pic_show">
-            <img :src="item.img | setWH('128.180')" :alt="item.nm">
+            <img @tap="toDetail(item.id)" :src="item.img | setWH('128.180')" :alt="item.nm">
           </div>
           <div class="info_list">
-            <h2>{{item.nm}}</h2>
+            <h2 @tap="toDetail(item.id)">{{item.nm}}</h2>
             <p>
               评分：
               <span class="grade">{{item.sc}}</span>
@@ -62,8 +62,9 @@ export default {
     });
   },
   methods: {
-    toDetail() {
-      console.log("跳转到影片详情页");
+    toDetail(mId) {
+      this.$router.push("/movie/detail/1/" + mId);
+      // console.log(movieId);
     },
     toScroll(pos) {
       this.isScroll = true;

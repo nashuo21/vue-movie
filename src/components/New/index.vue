@@ -4,11 +4,11 @@
     <Scroller v-else>
       <ul>
         <li v-for="item in comList" :key="item.id">
-          <div class="pic_show">
+          <div class="pic_show" @tap="toDetail(item.id)">
             <img :src="item.img | setWH('128.180')" :alt="item.nm">
           </div>
           <div class="info_list">
-            <h2>{{item.nm}}</h2>
+            <h2 @tap="toDetail(item.id)">{{item.nm}}</h2>
             <p>
               期待值：
               <span class="grade">{{item.wish}}</span>
@@ -37,6 +37,11 @@ export default {
       isLoading: true,
       prevCityId: -1
     };
+  },
+  methods: {
+    toDetail(movieId) {
+      this.$router.push("/movie/detail/2/" + movieId);
+    }
   },
   activated() {
     var cityId = this.$store.state.city.id;
