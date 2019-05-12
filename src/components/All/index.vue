@@ -1,22 +1,30 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <li v-for="item in cinemaList" :key="item.id">
-        <div>
-          <span>{{item.nm}}</span>
-          <span class="q">
-            <span class="price">{{item.sellPrice}} 元起</span>
-          </span>
-        </div>
-        <div class="address">
-          <span>{{item.addr}}</span>
-          <span>{{item.distance}}</span>
-        </div>
-        <div class="card">
-          <div v-for="(num,key) in item.tag" v-if="num===1" :key="key" :class="key | classCard">{{ key | formatCard }}</div>
-        </div>
-      </li>
-    </ul>
+    <Loading v-if="isLoading"/>
+    <Scroller v-else>
+      <ul>
+        <li v-for="item in cinemaList" :key="item.id">
+          <div>
+            <span>{{item.nm}}</span>
+            <span class="q">
+              <span class="price">{{item.sellPrice}} 元起</span>
+            </span>
+          </div>
+          <div class="address">
+            <span>{{item.addr}}</span>
+            <span>{{item.distance}}</span>
+          </div>
+          <div class="card">
+            <div
+              v-for="(num,key) in item.tag"
+              v-if="num===1"
+              :key="key"
+              :class="key | classCard"
+            >{{ key | formatCard }}</div>
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
@@ -25,49 +33,55 @@ export default {
   name: "All",
   data() {
     return {
-      cinemaList: []
+      cinemaList: [],
+      isLoading: true,
+      prevCityId: -1
     };
   },
   filters: {
-    formatCard(key){
+    formatCard(key) {
       var card = [
-        {key:'allowRefund',value:'退改'},
-        {key:'sell',value:'优惠'},
-        {key:'snack',value:'小吃'},
-        {key:'endorse',value:'推荐'},
+        { key: "allowRefund", value: "退改" },
+        { key: "sell", value: "优惠" },
+        { key: "snack", value: "小吃" },
+        { key: "endorse", value: "推荐" }
       ];
-      for(var i=0;i<card.length;i++){
-        
-        if(card[i].key === key){
+      for (var i = 0; i < card.length; i++) {
+        if (card[i].key === key) {
           return card[i].value;
         }
-               
       }
-      return '';
+      return "";
     },
-    classCard(key){
+    classCard(key) {
       var card = [
-        {key:'allowRefund',value:'bl'},
-        {key:'sell',value:'or'},
-        {key:'snack',value:'or'},
-        {key:'endorse',value:'bl'},
+        { key: "allowRefund", value: "bl" },
+        { key: "sell", value: "or" },
+        { key: "snack", value: "or" },
+        { key: "endorse", value: "bl" }
       ];
-      for(var i=0;i<card.length;i++){
-        
-        if(card[i].key === key){
+      for (var i = 0; i < card.length; i++) {
+        if (card[i].key === key) {
           return card[i].value;
         }
-               
       }
     }
   },
   components: {},
-  mounted() {
-    this.axios.get("/api/cinemaList?cityId=10").then(res => {
+  activated() {
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isLoading = true;
+    this.axios.get("/api/cinemaList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.cinemaList = res.data.data.cinemas;
-        console.log(this.cinemaList);
+        this.isLoading = false;
+        this.prevCityId = cityId;
+
+        // console.log(this.cinemaList);
       }
     });
   }
