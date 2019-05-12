@@ -1,29 +1,28 @@
-# 项目名称 vue-movie
+# 名称 
+vue-movie
 
-## Project setup
-```
-npm install
-```
+# 简介
+根据【2019千锋Web前端：Vue实战项目之喵喵电影】手敲代码。仅供学习vue的小伙伴参考。<br>
+视频教程 [2019千锋Web前端：Vue实战项目之喵喵电影](https://www.bilibili.com/video/av47535390)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+# 开发工具
+### vscode
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# 开发环境
+- github
+- nodejs
+- vue
+- vuex
+- vue-router
+- better-scroll
+- axios
+# 参考文档
+- [vuejs中文](https://cn.vuejs.org/)
+- [vue-router](https://router.vuejs.org/zh/guide/#html)
+- [vue-router API](https://router.vuejs.org/zh/api/#router-link)
+- [better-scroll手册](http://ustbhuangyi.github.io/better-scroll/doc/api.html)
+- [vuex](https://vuex.vuejs.org/zh/)
+- [axios中文](http://www.axios-js.com/zh-cn/docs/) 
+# 其他
+- 整个vue-movie项目的数据，来自视频教程老师提供的真实数据接口
+# 未完待续
