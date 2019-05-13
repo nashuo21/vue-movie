@@ -1,29 +1,16 @@
-# movie
+---
+description: vue-movie文档
+---
 
-## Project setup
-```
-npm install
-```
+# vue-movie.md
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 项目名称 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+#### vue-movie
 
-### Run your tests
-```
-npm run test
-```
+## 项目简介
 
-### Lints and fixes files
-```
-npm run lint
-```
+自学vue手敲代码
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
